@@ -9,5 +9,4 @@ public class ResidentManagementApplication {
     public static void main(String[] args) {
         SpringApplication.run(ResidentManagementApplication.class, args);
     }
-
 }

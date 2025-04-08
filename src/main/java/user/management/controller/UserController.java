@@ -10,7 +10,7 @@ import user.management.service.UserService;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("")
 public class UserController {
     @Autowired
@@ -26,11 +26,15 @@ public class UserController {
 //
 //    }
     // getUser by id in localhost:8080/user/1
-    @GetMapping("/user/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id){
-        Optional<User> user = userService.getUser(id);
-        return ResponseEntity.ok(user);
+@GetMapping("/user/{id}")
+public ResponseEntity<?> getUser(@PathVariable Long id){
+    Optional<User> user = userService.getUser(id);
+    if (user.isEmpty()) {
+        return ResponseEntity.status(404).body("User not found");
     }
+    return ResponseEntity.ok(user.get());
+}
+
     // search user by keyword filled by username, name, gmail, phone, address
     @GetMapping("/search-user")
     public ResponseEntity<?> searchUser(@RequestParam String keyword){
@@ -38,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/all-user")
+    @GetMapping("/all-users")
     public ResponseEntity<?> allUser(){
         List<User> users = userService.getAllUser();
         return ResponseEntity.ok(users);
